@@ -1,0 +1,175 @@
+# Program functions
+def check_valid_coins():
+    """Accepts input for the number of coins.
+    Attempts to convert to an integer; it will ask the user to retry if invalid, else returns integer value."""
+    while True:
+        coin_input = input(f"How many {coins}?: ")
+        if not report_or_off(coin_input):
+            continue
+        try:
+            int(coin_input)
+        except ValueError:
+            print("Please only enter whole numbers.")
+            continue
+        else:
+            if int(coin_input) < 0:
+                print("Please only enter positive numbers.")
+            else:
+                return int(coin_input)
+
+def report_or_off(command_input):
+    """Checks if user input is a command code (report or off).
+    If report, then display the report and return False.
+    If off, then exit the program."""
+    if command_input == "report":
+        print("\nCurrent inventory:")
+        print(display_inventory(inventory))
+        return False
+    elif command_input == "off":
+        print("Goodbye!")
+        exit()
+    else:
+        return command_input
+
+def compare_cost_and_payment(item_choice, user_payment):
+    """Accepts drink choice and payment as arguments.
+    First checks: if payment is less than cost, then rejects and refunds.
+    If payment exceeds cost, then change is returned.
+    Successful transaction returns True, otherwise False."""
+    item_cost = MENU[item_choice]["cost"]
+    if user_payment < item_cost:
+        print("Sorry that's not enough money. Money refunded.")
+        return False
+    elif user_payment > item_cost:
+        change = round(user_payment - item_cost, 2)
+        print(f"Here is ${change} in change.")
+        return True
+    else:
+        return True
+
+def ask_keep_buying():
+    """A loop to ask if the user wants to buy another drink.
+    Acts as a filter, catching invalid responses and asking again."""
+    while True:
+        user_response = input("Would you like to buy another drink? Type 'y' or 'n': ").strip().lower()
+        if not report_or_off(user_response):
+            continue
+        elif not user_response.isalpha():
+            print("Please only enter 'y' or 'n'.")
+            continue
+        elif user_response != "y" and user_response != "n":
+            print("Please only enter 'y' or 'n'.")
+            continue
+        else:
+            return user_response
+
+def check_resources(current_inventory, user_drink):
+    """A preliminary check to see if there are sufficient resources to brew the drink.
+    Returns False if any ingredient is less than the required quantity, else True."""
+    if current_inventory["water"] < MENU[user_drink]["ingredients"]["water"]:
+        return False
+    elif current_inventory["milk"] < MENU[user_drink]["ingredients"]["milk"]:
+        return False
+    elif current_inventory["coffee"] < MENU[user_drink]["ingredients"]["coffee"]:
+        return False
+    else:
+        return True
+
+def update_inventory(current_inventory, user_drink):
+    """Updates the inventory after a successful transaction and drink delivery.
+    Returns updated inventory for reassignment."""
+    current_inventory["water"] -= MENU[user_drink]["ingredients"]["water"]
+    current_inventory["milk"] -= MENU[user_drink]["ingredients"]["milk"]
+    current_inventory["coffee"] -= MENU[user_drink]["ingredients"]["coffee"]
+    current_inventory["money"] += MENU[user_choice]["cost"]
+    return current_inventory
+
+def display_inventory(current_inventory):
+    """Formats the inventory content to display in the report.
+    Use the function within a print statement to display the inventory."""
+    return rf"""
+Water: {current_inventory['water']}ml
+Milk: {current_inventory['milk']}ml
+Coffee: {current_inventory['coffee']}g
+Money: ${current_inventory['money']:.2f}   
+"""
+
+# Initialize variables
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "milk": 0,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+keep_buying = "y"
+inventory = {
+        "water": 300,
+        "milk": 200,
+        "coffee": 100,
+        "money": 0,
+    }
+
+# Main program loop
+while keep_buying == "y":
+    # Introduction with menu and commands
+    print("\n" *20)
+    print("\nWelcome to the Coffee Maker Vending Machine!\n")
+    print("The menu options are:\n\n1. Espresso: 50ml water, 18G coffee. $1.50.")
+    print("2. Latte: 200ml water, 150ml milk, 24G coffee. $2.50.")
+    print("3. Cappuccino: 250ml water, 100ml milk, 24G coffee. $3.00.")
+    print("*Type 'report' at any time to see the current inventory.*")
+    print("*Type 'off' at any time to turn off the machine.*")
+    # Choice loop, checks for commands, catches invalid responses, checks if inventory sufficient
+    while True:
+        user_choice = input("\nWhat would you like? (espresso/latte/cappuccino): ").strip().lower()
+        if not report_or_off(user_choice):
+            continue
+        elif user_choice != "espresso" and user_choice != "latte" and user_choice != "cappuccino":
+            print("Please only choose espresso, latte, or capuccino.")
+            continue
+        elif not check_resources(inventory, user_choice):
+            print("Sorry, there are insufficient resources to brew your drink. Please try again later.")
+            keep_buying = "n"
+            break
+        else:
+            print("Please insert coins.")
+        # Get coin inputs, using check_valid_coins function and reassigning the coins variable for each coin type.
+        coins = "quarters"
+        quarters_inserted = check_valid_coins()
+        coins = "dimes"
+        dimes_inserted = check_valid_coins()
+        coins = "nickels"
+        nickels_inserted = check_valid_coins()
+        coins = "pennies"
+        pennies_inserted = check_valid_coins()
+        # Calculate total coins and compare to drink cost.
+        total_coins_inserted = quarters_inserted * 0.25 + dimes_inserted * 0.10 + nickels_inserted * 0.05 + pennies_inserted * 0.01
+        if not compare_cost_and_payment(user_choice, total_coins_inserted):
+            continue
+        else:
+            print(f"Here is your {user_choice}☕. Enjoy!")
+            inventory = update_inventory(inventory, user_choice)
+            keep_buying = ask_keep_buying()
+            break
+
+print("Thank you for using the Coffee Maker Vending Machine! Goodbye!")
