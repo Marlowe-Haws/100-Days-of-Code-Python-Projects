@@ -1,0 +1,86 @@
+import random
+
+# ASCII art logo.
+LOGO = r"""
+   _____                       _   _            _   _                 _               
+  / ____|                     | | | |          | \ | |               | |              
+ | |  __ _   _  ___  ___ ___  | |_| |__   ___  |  \| |_   _ _ __ ___ | |__   ___ _ __ 
+ | | |_ | | | |/ _ \/ __/ __| | __| '_ \ / _ \ | . ` | | | | '_ ` _ \| '_ \ / _ \ '__|
+ | |__| | |_| |  __/\__ \__ \ | |_| | | |  __/ | |\  | |_| | | | | | | |_) |  __/ |   
+  \_____|\__,_|\___||___/___/  \__|_| |_|\___| |_| \_|\__,_|_| |_| |_|_.__/ \___|_|     
+"""
+# Initialize a list with numbers 1-100.
+NUMBER_LIST = list(range(1, 101))
+
+# Define a function to check if the user wants to play again.
+def play_again():
+    """Ask for an input of 'y' or 'n'.
+    'n' will exit the program, and 'y' will exit the function (will proceed to restart the main loop).
+    Invalid inputs will request input again."""
+    while True:
+        choice = input("Do you want to play again? Type 'y' or 'n': ").strip().lower()
+        if choice == 'y':
+            break
+        elif choice == 'n':
+            print("Goodbye!")
+            exit()
+        else:
+            print("Please only enter 'y' or 'n'.")
+
+# Define a function for the user's guess attempts.
+# Handle inputs, compare to the answer, and determine the result.
+def make_guesses(chances, solution):
+    """Accepts attempts and answer as arguments.
+    Asks user to guess the answer.
+    Filters out invalid inputs (only whole numbers within NUMBER list).
+    Compares the user's guess to the answer, deducting from attempts if wrong.
+    Continues until attempts are exhausted or the user guesses the answer."""
+    while True:
+        guess = input("Make a guess: ")
+        try:
+            guess = int(guess)
+        except ValueError:
+            print("Please only enter whole numbers.")
+            continue
+        guess = int(guess)
+        if guess not in NUMBER_LIST:
+            print("Please enter a number between 1 and 100.")
+            continue
+        if guess == solution:
+            print("That's correct! You win!")
+            break
+        else:
+            if guess > solution:
+                print("Too high.\nTry again.")
+            else:
+                print("Too low.\nTry again.")
+        chances -= 1
+        print(f"You have {chances} attempts remaining to guess the number.")
+        if chances == 0:
+            print("You ran out of attempts! You lose.")
+            break
+
+# Main loop, select difficulty, handle inputs.
+while True:
+    answer = random.choice(NUMBER_LIST)
+    print(LOGO)
+    print("Welcome to the Number Guessing Game!\nI'm thinking of a number between 1 and 100.")
+    # I nested this loop so we only ask for the difficulty repeatedly with incorrect inputs.
+    while True:
+        difficulty = input("Choose a difficulty. Type 'easy' or 'hard': ").strip().lower()
+        if difficulty == "easy":
+            print("You have 10 attempts to guess the number.")
+            attempts = 10
+        elif difficulty == "hard":
+            print("You have 5 attempts to guess the number.")
+            attempts = 5
+        else:
+            print("Please only enter 'easy' or 'hard'.")
+            continue
+        # Call the guessing function, pass attempts and answer as arguments.
+        make_guesses(attempts, answer)
+        break
+    # Whether they win or lose, call the play function to see if they want to play again.
+    play_again()
+    print("\n" * 50)
+    continue
