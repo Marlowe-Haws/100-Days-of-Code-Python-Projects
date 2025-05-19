@@ -1,0 +1,52 @@
+print(r'''
+                             __________________
+                  __..---..-''_.............,_..`>
+           _..-'':::_:-'_..-'_.-':::::::::,''//||                      _./
+         ,':::::::,'_.-':','.-':.:.::::,','.//:||           _..---.._,','
+       ,':::::::,',':'',',:':'`:.:::,',':`:/'.:::         ,'  ,'    _`/
+      /::.::.::/,':'  ',':' . ' ::,',':'  '   `:\\       /     .,' _`:)
+     /:.::.::://'   .          ',','         .   \\    ,/    .:;  (::. \
+    :.::.::._//             .  /'   .     .       `:,./)    (:/ `. \`:)/
+    |.:._.-'::     _..--.._                  __    (:.)      )    `'  `
+    |.,'    ||  _.'     ,',`.  _.-''``.   ,''  )   /`'      :
+    |/      ||,'    _.-','  |,'        ),'   ,:   (         ; __
+            |/   _,':     / `         '      `:.            \',.\
+              _,':'    : :.                     '    ,'     /'`''
+            ,':'        \::  /:..        .        .:' (:   `.      _
+          ,':'            \:::::.    .`.  )   _..:.:,::`.._  ``--'',`
+         /:'      _..-''```::(:.      ::\/:::.::::.'_:::'  ``----''`'
+        /:     ,-'          `\:.       `::_::-''
+       ::'    ,               \:.        |::|
+       |:    :          ,.     `:.       |::|
+       ::.   :        ,'/        `.      ;::;
+        \:.   `..__.-','           )  .:/:,'
+         `.:.       ,'         _..' _.-::/
+           ``-----''          `:. .'<:::<
+                                `. `._>::`-..__
+                                ,',`-._)_).---'`-._
+                               ,`-`:::`'`\::'      \
+                           ___/::::::::,' `:\      (_
+                       __,'::::`--.._:/     \`._   (:::._
+                     ,:`._`----..._:::`-._   \:::.  `-.SSt:.
+''')
+print("Welcome to Dragon Lair.")
+print("Your mission is to find the treasure, and survive....\n")
+choice_1 = input("You step into the ominous cave and see two branches from the main tunnel. \nWhich do you choose? 'Left' or 'Right':")
+if choice_1.lower() == "left":
+    choice_2 = input("You walk down the dimly lit tunnel until you approach a surprisingly large and deep looking subterranean lake. \nYou notice that there is an empty docking port on this side. Perhaps there's a ferry to cross it. \nWhat will do you? 'Swim' or 'Wait':")
+    if choice_2.lower() == "swim":
+        print("You decide to swim across the lake rather than waiting for a ferry that might not even exist. \nAfter only taking a few strokes, you hear the water splashing around you; the lake is full of piranhas! \nIn mere seconds, you are reduced to a picked-clean skeleton that sinks, joining the graveyard of similar foolhardy explorers within the water's depths. \nGame over.")
+    elif choice_2.lower() == "wait":
+        choice_3 = input("You wait for the ferry to arrive.\nAfter about an hour, you see the ferryman languidly rowing towards you. \nYou call out to him, but he ignores you. \nHe docks ashore and stares at you blankly. \nYou ask if it's alright if you ride with him, and he continues to ignore you. \nHe's a very creepy looking figure with a hood pulled up so you only see shadows and can't gauge his expression. \nYou decide to hop aboard. \nHe starts rowing to the other side, ignoring your presence the entire ride. \nWhen you reach the other side, you hop off the boat and awkwardly say thanks, which he ignores, and then he immediately departs toward the other side. \nYou almost shout out to him to wait for you, but you decide he'll probably return anyway since it seems that's what he does... \nNow that you're this far, you decide to keep going. \nOn this side of the lake, there are three doors built into the cave: a red, blue, and yellow door. \nThey are all large doors made of stone and look identical except for the color difference. \nWhich door do you choose? 'Red', 'Blue', or 'Yellow':")
+        if choice_3.lower() == "red":
+            print("You heave against the heavy door with your shoulder and manage to get it open. \nAs soon as you stick your head inside, you are engulfed in flames. \nThe red door led to the nursery, and the mother dragon was waiting for you. \nGame over.")
+        elif choice_3.lower() == "blue":
+            print("You heave against the heavy door with your shoulder and manage to get it open. \nYou cautiously peer inside. \nYou see another vast chamber filled with water. \nYou start to look around to see if there is another dock for a ferry, and before you know it, a giant sea monster seizes you in its tentacles and drags you down beneath the water, never to be seen again.... \nGame over.")
+        elif choice_3.lower() == "yellow":
+            print("You heave against the heavy door with your shoulder and manage to get it open. \nYou stare in horror as you stand face to face with the biggest golden dragon you've ever seen! \nUntil you realize it's just a golden statue. \nYou've found the treasure chamber which is chock-full of limitless wealth! \nCongratulations! You win!")
+        else:
+            print("Umm... that wasn't one of the options. \nGame over.")
+    else:
+        print("Umm... that wasn't one of the options. \nGame over.")
+else:
+    print("You waltzed right into the dragon's main chamber. \nIt immediately sees you and burns you to a crisp on the spot. \nGame over.")
