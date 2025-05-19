@@ -1,0 +1,80 @@
+import random
+import sys
+rock = '''
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+'''
+
+paper = '''
+    _______
+---'   ____)____
+          ______)
+          _______)
+         _______)
+---.__________)
+'''
+
+scissors = '''
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+'''
+print("=" *40)
+print("Welcome to the Rock Paper Scissors game!")
+print("=" *40)
+while True:
+    user_input = input("\nWhat do you choose? 0 for Rock, 1 for Paper, or 2 for Scissors (or 'q' to quit):").strip().lower()
+    if user_input == "q":
+        print("\nThanks for playing! Exit program.")
+        sys.exit()
+    user_int = int(user_input)
+    if user_int == 0:
+        print(f"\nYou chose rock.{rock}")
+    elif user_int == 1:
+        print(f"\nYou chose paper.{paper}")
+    elif user_int == 2:
+        print(f"\nYou chose scissors.{scissors}")
+    else:
+        print("\nInvalid entry, try again.")
+        continue
+    computer_random_int = random.randint(0, 2)
+    if computer_random_int == 0:
+        print(f"\nComputer chose rock.{rock}")
+    elif computer_random_int == 1:
+        print(f"\nComputer chose paper.{paper}")
+    elif computer_random_int == 2:
+        print(f"\nComputer chose scissors.{scissors}")
+    if user_int == 0 and computer_random_int == 0:
+        print("\nIt's a draw!")
+    elif user_int == 0 and computer_random_int == 1:
+        print("\nYou lose!")
+    elif user_int == 0 and computer_random_int == 2:
+        print("\nYou win!")
+    elif user_int == 1 and computer_random_int == 0:
+        print("\nYou win!")
+    elif user_int == 1 and computer_random_int == 1:
+        print("\nIt's a draw!")
+    elif user_int == 1 and computer_random_int == 2:
+        print("\nYou lose!")
+    elif user_int == 2 and computer_random_int == 0:
+        print("\nYou lose!")
+    elif user_int == 2 and computer_random_int == 1:
+        print("\nYou win!")
+    elif user_int == 2 and computer_random_int == 2:
+        print("\nIt's a draw!")
+    while True:
+        continue_playing = input("\nWould you like to play again? 'Y' or 'N':").strip().lower()
+        if continue_playing == "n":
+            print("\nThanks for playing! Exit program.")
+            sys.exit()
+        elif continue_playing == "y":
+            break
+        else:
+            print("\nInvalid entry. Please enter 'Y' or 'N'.")
