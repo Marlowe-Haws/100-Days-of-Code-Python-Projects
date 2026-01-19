@@ -3,6 +3,23 @@ from tkinter import messagebox
 import secrets
 import string
 import pyperclip
+import json
+
+
+# --------------------------- SEARCH FUNCTION ------------------------------ #
+def search():
+    website = website_entry.get()
+    try:
+        with open("passwords.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        messagebox.showerror("Error", "Database is empty.")
+    else:
+        try:
+            messagebox.showinfo(f"{website}", f"Email/Username: {data[website]['name']}"
+                                              f"\nPassword: {data[website]['password']}")
+        except KeyError:
+            messagebox.showerror("Error", f"Website: {website} not found in database.")
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def clear_entries():
@@ -15,16 +32,40 @@ def add_password():
     website = website_entry.get()
     name = name_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "name": name,
+            "password": password,
+        }
+    }
+
     if not website or not name or not password:
         messagebox.showerror("Error", "Please fill all the fields.")
     else:
-        confirmed = messagebox.askokcancel(title="Entry Confirmation", message=f"{website} | {name} | {password}\n "
+        confirmed = messagebox.askokcancel(title="Entry Confirmation", message=f"Website: {website}\n\nUsername/Email: "
+                                                                               f"{name}\n\nPassword: {password}\n\n "
                                                                                f"Confirm Entry?")
 
         if confirmed:
-            with open("passwords.txt", "a") as f:
-                f.write(f"{website} | {name} | {password}\n")
-            clear_entries()
+            try:
+                with open("passwords.json", "r") as f:
+                    # Read old data.
+                    data = json.load(f)
+                    # Update the data.
+                    data.update(new_data)
+
+            except FileNotFoundError:
+                # If no existing file, write a new one.
+                with open("passwords.json", "w") as f:
+                    json.dump(new_data, f, indent=4)
+
+            else:
+                with open("passwords.json", "w") as f:
+                    # Write the new data.
+                    json.dump(data, f, indent=4)
+
+            finally:
+                clear_entries()
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 POOL = string.ascii_letters + string.digits + string.punctuation
@@ -59,8 +100,8 @@ name_label.grid(column=0, row=2, padx=1, pady=1, sticky=E)
 password_label = Label(frame, text="Password:", bg="white")
 password_label.grid(column=0, row=3, padx=1, pady=1, sticky=E)
 
-website_entry = Entry(frame, width=51, relief="solid")
-website_entry.grid(column=1, row=1, columnspan=2, padx=1, pady=1)
+website_entry = Entry(frame, width=32, relief="solid")
+website_entry.grid(column=1, row=1, padx=3, pady=1)
 website_entry.focus()
 
 name_entry = Entry(frame, width=51, relief="solid")
@@ -76,4 +117,12 @@ generate_button.grid(column=2, row=3, pady=1, padx=3, sticky=W)
 add_button = Button(frame, text="Add", width=43, command=add_password)
 add_button.grid(column=1, row=4, columnspan=2, padx=1, pady=1)
 
+search_button = Button(frame, text="Search", width=14, command=search)
+search_button.grid(column=2, row=1, pady=1, padx=3, sticky=W)
+
 window.mainloop()
+
+# There's a built-in json library with:
+# json.dump() for writing
+# json.load() for reading
+# json.update for updating
